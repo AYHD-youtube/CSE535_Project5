@@ -35,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
                     binding.passwordEdTv.text.toString()
                 )
                     .addOnCompleteListener(this) { task ->
+                        binding.loadingPb.visibility = View.GONE
                         if (task.isSuccessful) {
-                            binding.loadingPb.visibility = View.GONE
                             val userId = auth.currentUser?.uid
                             val intent = Intent(this, OnboardingActivity::class.java)
                             intent.putExtra("userId", userId)
@@ -63,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
                     binding.passwordEdTv.text.toString()
                 )
                     .addOnCompleteListener(this) { task ->
+                        binding.loadingPb.visibility = View.GONE
                         if (task.isSuccessful) {
                             startActivity(Intent(this, MainActivity::class.java))
                         } else {
