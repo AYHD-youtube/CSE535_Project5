@@ -3,7 +3,7 @@ import random
 # Function to generate random exercise
 def generate_exercise(exercise_category):
     exercises_by_category = {
-        'Cardio': ['Running', 'Cycling', 'Jump Rope', 'Elliptical', 'Rowing'],
+        'Cardio': ['Jump Rope', 'Elliptical', 'Rowing'],
         'Strength': ['Weightlifting', 'Bodyweight Exercises', 'CrossFit'],
         'Yoga': ['Hatha Yoga', 'Vinyasa Yoga', 'Power Yoga', 'Ashtanga Yoga'],
         'HIIT': ['Tabata', 'Interval Sprints', 'Circuit Training'],

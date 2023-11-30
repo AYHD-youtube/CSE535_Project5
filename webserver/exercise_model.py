@@ -20,21 +20,38 @@ def create_model():
     # Train the machine learning model
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
-
+    print(X_test.columns)
     return model
 
 def recommend_exercise(height, weight, previous_exercise, calories_goal):
-    # Create a dataframe with the data point we want to predict on
+
     data_point = pd.DataFrame({
         'Height': [height],
         'Weight': [weight],
-        'Previous_Exercise': [previous_exercise],
+        'Previous_Exercise_Cycling': [0],
+        'Previous_Exercise_HIIT': [0],
+        'Previous_Exercise_Running': [0],
+        'Previous_Exercise_Strength': [0],
+        'Previous_Exercise_Yoga': [0],
         'Calories_Goal': [calories_goal]
     })
 
+    if previous_exercise == 'Cycling':
+        data_point['Previous_Exercise_Cycling'] = 1
+    elif previous_exercise == 'HIIT':
+        data_point['Previous_Exercise_HIIT'] = 1
+    elif previous_exercise == 'Running':
+        data_point['Previous_Exercise_Running'] = 1
+    elif previous_exercise == 'Strength':
+        data_point['Previous_Exercise_Strength'] = 1
+    elif previous_exercise == 'Yoga':
+        data_point['Previous_Exercise_Yoga'] = 1
+   
     # Load the model and use it to predict on the data point
     model = create_model()
     prediction = model.predict(data_point)
+
+    print(prediction)
 
     # Return the prediction
     return prediction[0]
