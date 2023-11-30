@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "173112042672",
-    "project_id": "mc-project-5-19acb",
-    "storage_bucket": "mc-project-5-19acb.appspot.com"
+    "project_number": "1011770130099",
+    "project_id": "mc-project-5-406701",
+    "storage_bucket": "mc-project-5-406701.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:173112042672:android:6450505791f3bf006e0775",
+        "mobilesdk_app_id": "1:1011770130099:android:4f0bd47ccd04a5247efac6",
         "android_client_info": {
           "package_name": "edu.asu.cse535.project5"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAEi9g2dqlh-IaE7M437IYi1s1qq8gzaf8"
+          "current_key": "AIzaSyDMS2Ryp1LRoM2u7bNsg7WEKrrKVzKVgb4"
         }
       ],
       "services": {
