@@ -1,22 +1,19 @@
 from flask import Flask, request, jsonify
+from exercise_model import recommend_exercise
+from calorie_exercise_recommend import generate_exercise, calculate_calories_burned
+import random
 
 app = Flask(__name__)
 
 def recommend_exercises(height, weight, previous_exercise, calories_goal):
-    # Replace this with your specific logic for recommending exercises
-    recommended_exercises = []
+    recommended_type_exercise = recommend_exercise(height, weight, previous_exercise, calories_goal)  
+    recommended_exercise = generate_exercise(recommended_type_exercise)
 
-    if previous_exercise == 'yes':
-        recommended_exercises.append('Cardio exercises like running or cycling')
-    else:
-        recommended_exercises.append('Strength training exercises like weightlifting')
+    time = random.randint(20, 60)
+    calories = calculate_calories_burned(recommended_exercise, weight, time)
 
-    if calories_goal < 2000:
-        recommended_exercises.append('High-intensity interval training (HIIT) workouts')
-    else:
-        recommended_exercises.append('Low-intensity steady-state (LISS) cardio exercises')
+    return recommended_exercise, time, calories
 
-    return recommended_exercises
 
 @app.route('/recommend_exercises', methods=['POST'])
 def recommend_exercises_endpoint():
@@ -28,14 +25,13 @@ def recommend_exercises_endpoint():
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Missing required fields'}), 400
 
-    height = data['height']
-    weight = data['weight']
-    previous_exercise = data['previous_exercise']
-    calories_goal = data['calories_goal']
+    data = recommend_exercises(data['height'], data['weight'], data['previous_exercise'], data['calories_goal'])
 
-    recommended_exercises = recommend_exercises(height, weight, previous_exercise, calories_goal)
-
-    return jsonify({'recommended_exercises': recommended_exercises})
+    return jsonify({
+        'recommended_exercise': data[0],
+        'time': data[1],
+        'calories': data[2]
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
