@@ -26,25 +26,4 @@
             android:text="Exercise" />
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/dietCv"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/exerciseCv"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Diet" />
-    </com.google.android.material.card.MaterialCardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
