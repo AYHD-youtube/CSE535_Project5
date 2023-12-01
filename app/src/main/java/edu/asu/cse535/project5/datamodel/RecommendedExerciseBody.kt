@@ -1,4 +1,4 @@
-package edu.asu.cse535.project5
+package edu.asu.cse535.project5.datamodel
 
 data class RecommendedExerciseBody(
     val calories_goal: Int,

@@ -37,6 +37,16 @@
         app:layout_constraintTop_toBottomOf="@+id/timeEdTv"
         tools:text="2450" />
 
+    <TextView
+        android:id="@+id/exerciseRecommendationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caloriesLeftToBurnToday"
+        tools:text="2450" />
+
     <Button
         android:id="@+id/continueBtn"
         android:layout_width="match_parent"

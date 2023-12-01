@@ -1,6 +1,7 @@
 package edu.asu.cse535.project5.repo
 
 
+import android.util.Log
 import edu.asu.cse535.project5.network.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,10 +23,12 @@ abstract class BaseRepo() {
                     Resource.Error(errorMessage = "Something went wrong")
                 }
             } catch (e: HttpException) {
+                Log.d("BaseRepo", "safeApiCall: 1")
                 Resource.Error(errorMessage = e.message ?: "Something went wrong")
             } catch (e: IOException) {
                 Resource.Error("Please check your network connection")
             } catch (e: Exception) {
+                Log.d("BaseRepo", "safeApiCall: $e")
                 Resource.Error(errorMessage = "Something went wrong")
             }
         }

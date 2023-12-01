@@ -2,9 +2,11 @@ package edu.asu.cse535.project5
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
@@ -15,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import edu.asu.cse535.project5.databinding.ActivityExerciseBinding
+import edu.asu.cse535.project5.datamodel.RecommendedExerciseBody
 import edu.asu.cse535.project5.network.Client
 import edu.asu.cse535.project5.network.Resource
 import edu.asu.cse535.project5.repo.ExerciseRepo
@@ -224,7 +227,7 @@ class ExerciseActivity : AppCompatActivity() {
                         }
 
                         is Resource.Success -> {
-
+                            binding.exerciseRecommendationTv.text="Your Exercise for tomorrow is ${it.data?.recommended_exercise} for ${it.data?.time} mins"
                             binding.loadingPb.visibility = View.GONE
                         }
                     }
