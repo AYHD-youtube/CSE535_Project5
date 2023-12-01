@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val NUTRITIONIX_INSTANT_SEARCH_ENDPOINT = "/v2/search/instant/?query="
     private val NUTRITIONIX_UPC_SEARCH_ENDPOINT = "/v2/search/item/?upc="
 
+    // Not worried about exposing keys right now as I registered the account using public inbox
     private val NUTRITIONIX_APP_ID = "25538016"
     private val NUTRITIONIX_APP_KEY = "247d45a977d4ef2b246d1e95e2326cdd"
     lateinit var autoCompleteTextView : AutoCompleteTextView
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener { barcode ->
                     val rawValue: String? = barcode.rawValue
                     if (rawValue != null) {
+                        Log.i("Barcode Scanner", rawValue)
                         fetchNutrientsData(rawValue)
                     } else {
                         showToast("Invalid scan")
@@ -77,17 +78,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        autoCompleteTextView.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        autoCompleteTextView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
                 val selectedItem = parent?.getItemAtPosition(position) as String
-                Log.v("Search By Name", selectedItem)
-                // Push the record to Firestore
-            }
+                val record : HashMap<String, String> = HashMap<String, String>()
+                val entries : List<String> = selectedItem.split(":")
+                record["meal"] = entries[0];
+                record["calories"] = entries[2]
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // This method is called when nothing is selected.
+                persistData(record)
             }
-        }
 
 
         // Form submission button click event
@@ -97,8 +97,11 @@ class MainActivity : AppCompatActivity() {
             if (isEmptyOrNull(mealName) || isEmptyOrNull(caloriesStr)) {
                 showToast("Please fill in all fields.")
             } else {
-                val calories = caloriesStr.toInt();
-                // Push the record to Firestore
+                val record : HashMap<String, String> = HashMap<String, String>()
+                record["meal"] = mealName;
+                record["calories"] = caloriesStr
+
+                this.persistData(record)
             }
         }
     }
@@ -143,7 +146,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        Log.i("Main", suggestions.toString())
         return suggestions
     }
 
@@ -160,8 +162,10 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 val nutrientsData = parseNutrientsData(response)
-                Log.i("UPC", nutrientsData)
-                // Push record to Firestore
+                val record : HashMap<String, String> = HashMap<String, String>()
+                val entries : List<String> = nutrientsData.split(":")
+                record["meal"] = entries[0];
+                record["calories"] = entries[2]
             },
             Response.ErrorListener { error ->
                 showToast("Error fetching suggestions: ${error.message}")
@@ -189,6 +193,12 @@ class MainActivity : AppCompatActivity() {
         val serving = item?.optString("serving_qty") + " " + item?.optString("serving_unit")
         val calories = item?.optString("nf_calories")
         return "$brand $food:$serving:$calories"
+    }
+
+    private fun persistData(record : Map<String, String>) {
+        // TODO : Integrate in Project 5 with Google Firestore
+        // Logging for now to avoid having conflicts in future due to two Goggle services integration
+        Log.i("Google Firestore", "Meal: ${record["meal"]}, Calories: ${record["calories"]}, Timestamp: ${System.currentTimeMillis()}");
     }
 
     private fun isEmptyOrNull(text: String):Boolean{
