@@ -58,11 +58,6 @@ X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# # Model Evaluation
-# predictions = model.predict(X_test)
-# mse = mean_squared_error(y_test, predictions)
-# print(f'Mean Squared Error: {mse}')
-
 # Sample Prediction
 def make_recommendation(age, height, weight, gender):
     bmi = calculate_bmi(weight, height)
@@ -73,7 +68,7 @@ def make_recommendation(age, height, weight, gender):
     return recommended_calories
 
 # Example usage
-print(make_recommendation(30, 175, 70, 'male'))
+# print(make_recommendation(30, 175, 70, 'male'))
 
 # Fetch Data from USDA API
 def fetch_usda_data(api_key, query, max_items=15):  # Increased number of items
@@ -176,10 +171,7 @@ def recommend_meal(api_key, time_of_day, current_calorie_intake, total_calorie_l
 
 
 # Example Usage
-api_key = 'YOUR_API_KEY'  # Replace with your actual USDA API key
-total_calorie_limit = make_recommendation(30, 175, 70, 'male')
-current_calorie_intake = 500  # Example current intake
-time_of_day = 'afternoon'  # 'morning', 'afternoon', 'evening', 'anytime'
-
-meal_suggestion = recommend_meal(api_key, time_of_day, current_calorie_intake, total_calorie_limit)
-print(meal_suggestion)
+# api_key = 'YOUR_API_KEY'  # Replace with your actual USDA API key
+# total_calorie_limit = make_recommendation(30, 175, 70, 'male')
+# current_calorie_intake = 500  # Example current intake
+# time_of_day = 'afternoon'  # 'morning', 'afternoon', 'evening', 'anytime'
