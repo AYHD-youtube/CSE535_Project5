@@ -14,5 +14,5 @@ interface ApiService {
     suspend fun postRecommendExercise(@Body exerciseBody: RecommendedExerciseBody): retrofit2.Response<RecommendedExerciseResponse>
 
     @POST("send")
-    suspend fun postNotification(@Body notifionBody: NotiBody): retrofit2.Response<NotiResponse>
+    suspend fun postNotification(@Body notiBody: NotiBody): retrofit2.Response<NotiResponse>
 }

@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         binding.exerciseCv.setOnClickListener {
             startActivity(Intent(this, ExerciseActivity::class.java))
         }
+
+        binding.dietCv.setOnClickListener {
+            startActivity(Intent(this, DietActivity::class.java))
+        }
     }
 
     private fun askNotificationPermission() {

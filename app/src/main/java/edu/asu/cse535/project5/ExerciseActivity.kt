@@ -218,6 +218,7 @@ class ExerciseActivity : AppCompatActivity() {
                     when (it) {
                         is Resource.Error -> {
                             it.message?.let { message ->
+                                binding.loadingPb.visibility = View.GONE
                                 binding.errorTv.visibility = View.VISIBLE
                                 binding.errorTv.text = message
                             }
@@ -228,12 +229,13 @@ class ExerciseActivity : AppCompatActivity() {
                         }
 
                         is Resource.Success -> {
+
                             val data = NotiBody.Data(
-                                "For duration ${it.data?.time} min and will burn ${it.data?.calories} calories",
+                                "For duration ${it.data?.time} min and will burn ${it.data?.calories?.toInt()} calories",
                                 "Tomorrow's exercise ${it.data?.recommended_exercise}"
                             )
                             val notification = NotiBody.Notification(
-                                "For duration ${it.data?.time} min and will burn ${it.data?.calories} calories",
+                                "For duration ${it.data?.time} min and will burn ${it.data?.calories?.toInt()} calories",
                                 "Tomorrow's exercise ${it.data?.recommended_exercise}"
                             )
                             val sharedPreferences =
@@ -261,6 +263,7 @@ class ExerciseActivity : AppCompatActivity() {
                         }
 
                         is Resource.Success -> {
+                            onBackPressed()
                             binding.loadingPb.visibility = View.GONE
                         }
                     }

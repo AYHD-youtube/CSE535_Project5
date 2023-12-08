@@ -1,23 +1,33 @@
 package edu.asu.cse535.project5
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.firebase.database.FirebaseDatabase
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import edu.asu.cse535.project5.datamodel.NotiBody
+import edu.asu.cse535.project5.network.Client
+import edu.asu.cse535.project5.network.ClientNoti
+import edu.asu.cse535.project5.network.Resource
+import edu.asu.cse535.project5.repo.ExerciseRepo
 import org.json.JSONObject
 
 class DietActivity : AppCompatActivity() {
@@ -28,17 +38,32 @@ class DietActivity : AppCompatActivity() {
     // Not worried about exposing keys right now as I registered the account using public inbox
     private val NUTRITIONIX_APP_ID = "25538016"
     private val NUTRITIONIX_APP_KEY = "247d45a977d4ef2b246d1e95e2326cdd"
-    lateinit var autoCompleteTextView : AutoCompleteTextView
+    lateinit var autoCompleteTextView: AutoCompleteTextView
+    lateinit var viewModel: ExerciseViewModel
+    private val usersRef by lazy {
+        FirebaseDatabase.getInstance().reference
+    }
+
+    private val repo by lazy {
+        ExerciseRepo(Client.api, ClientNoti.api)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_diet)
 
         // Barcode scanner button click event
+        val factory = ExerciseViewModel.ExerciseViewModelFactory(repo)
+        viewModel =
+            ViewModelProvider(this, factory)[ExerciseViewModel::class.java]
+
         findViewById<Button>(R.id.scanBarcodeButton).setOnClickListener {
             val options = GmsBarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
                     Barcode.FORMAT_UPC_A,
-                    Barcode.FORMAT_UPC_E)
+                    Barcode.FORMAT_UPC_E
+                )
                 .enableAutoZoom()
                 .build()
             val scanner = GmsBarcodeScanning.getClient(this, options)
@@ -59,6 +84,25 @@ class DietActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     // Task failed with an exception
                 }
+        }
+
+        viewModel.noti.observe(this) {
+            when (it) {
+                is Resource.Error -> {
+                    it.message?.let { message ->
+                        findViewById<ProgressBar>(R.id.loadingPb).visibility = View.GONE
+                    }
+                }
+
+                is Resource.Loading -> {
+                    findViewById<ProgressBar>(R.id.loadingPb).visibility = View.VISIBLE
+                }
+
+                is Resource.Success -> {
+                    onBackPressed()
+                    findViewById<ProgressBar>(R.id.loadingPb).visibility = View.GONE
+                }
+            }
         }
 
         autoCompleteTextView = findViewById(R.id.mealNameAutoComplete)
@@ -97,11 +141,11 @@ class DietActivity : AppCompatActivity() {
             if (isEmptyOrNull(mealName) || isEmptyOrNull(caloriesStr)) {
                 showToast("Please fill in all fields.")
             } else {
-                val record : HashMap<String, String> = HashMap<String, String>()
+                val record: HashMap<String, String> = HashMap<String, String>()
                 record["meal"] = mealName;
                 record["calories"] = caloriesStr
-
                 this.persistData(record)
+                onBackPressed()
             }
         }
     }
@@ -120,7 +164,7 @@ class DietActivity : AppCompatActivity() {
             }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
+                headers["Content-Type"] = "x-www-form-urlencoded"
                 headers["x-remote-user-id"] = "0"
                 headers["x-app-id"] = NUTRITIONIX_APP_ID
                 headers["x-app-key"] = NUTRITIONIX_APP_KEY
@@ -166,6 +210,7 @@ class DietActivity : AppCompatActivity() {
                 val entries : List<String> = nutrientsData.split(":")
                 record["meal"] = entries[0];
                 record["calories"] = entries[2]
+                this.persistData(record)
             },
             Response.ErrorListener { error ->
                 showToast("Error fetching suggestions: ${error.message}")
@@ -196,9 +241,21 @@ class DietActivity : AppCompatActivity() {
     }
 
     private fun persistData(record : Map<String, String>) {
-        // TODO : Integrate in Project 5 with Google Firestore
-        // Logging for now to avoid having conflicts in future due to two Goggle services integration
-        Log.i("Google Firestore", "Meal: ${record["meal"]}, Calories: ${record["calories"]}, Timestamp: ${System.currentTimeMillis()}");
+        findViewById<ProgressBar>(R.id.loadingPb).visibility = View.VISIBLE
+        val result = DataFromApiLocal.generateReccomendationDiet(record)
+        val data = NotiBody.Data(
+            "And eat ${result.calories} calories",
+            "Tomorrow make${result.meal}"
+        )
+        val notification = NotiBody.Notification(
+            "And eat ${result.calories} calories",
+            "Tomorrow make ${result.meal}"
+        )
+        val sharedPreferences =
+            getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("fcmToken", "") ?: ""
+        viewModel.postNotification(NotiBody(data, notification, token))
+        showToast("Diet Recorded")
     }
 
     private fun isEmptyOrNull(text: String):Boolean{
