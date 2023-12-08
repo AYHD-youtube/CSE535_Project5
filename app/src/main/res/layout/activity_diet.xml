@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    tools:context=".DietActivity">
+
+    <!-- Title of the view on top bar -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Meal Record"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Full width button with text "Scan Barcode" -->
+    <Button
+        android:id="@+id/scanBarcodeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Barcode"
+        android:layout_below="@id/titleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
+
+    <!-- Horizontal rule with "OR" in between -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textSize="18sp"
+        android:layout_below="@id/scanBarcodeButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <!-- Autocomplete textbox -->
+    <AutoCompleteTextView
+        android:id="@+id/mealNameAutoComplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scanBarcodeButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:hint="Search nutrition data by meal name" />
+
+    <!-- Horizontal rule with "OR" in between -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textSize="18sp"
+        android:layout_below="@id/mealNameAutoComplete"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <!-- Form group with two text boxes -->
+    <LinearLayout
+        android:id="@+id/mealFormManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/mealNameAutoComplete"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp">
+
+        <!-- Text box for meal name -->
+
+        <EditText
+            android:id="@+id/mealNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Meal name" />
+
+        <!-- Text box for calories number -->
+        <EditText
+            android:id="@+id/caloriesEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Calories intake count"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Manually"
+            android:layout_below="@id/caloriesEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mealFormManual"
+        android:gravity= "center"
+        android:padding= "40dp"
+        android:src="@drawable/nutritionix_attribution" />
+
+</RelativeLayout>
