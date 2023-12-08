@@ -20,7 +20,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class DietActivity : AppCompatActivity() {
     private val NUTRITIONIX_BASE_URL = "https://trackapi.nutritionix.com"
     private val NUTRITIONIX_INSTANT_SEARCH_ENDPOINT = "/v2/search/instant/?query="
     private val NUTRITIONIX_UPC_SEARCH_ENDPOINT = "/v2/search/item/?upc="
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var autoCompleteTextView : AutoCompleteTextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_diet)
 
         // Barcode scanner button click event
         findViewById<Button>(R.id.scanBarcodeButton).setOnClickListener {
