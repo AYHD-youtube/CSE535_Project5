@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter weight in pounds"
+        android:hint="Enter weight in kgs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/heightEdTv" />
@@ -34,10 +34,149 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Enter target weight in pounds"
+        android:hint="Enter target weight in kgs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weightEdTv" />
+
+    <EditText
+        android:id="@+id/ageEdTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="Enter age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetWeightEdTv" />
+
+    <Spinner
+        android:id="@+id/genderSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/ageEdTv" />
+
+    <TextView
+        android:id="@+id/glutenTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Gluten free diet"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
+
+    <CheckBox
+        android:id="@+id/glutenCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/glutenTv"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/glutenTv" />
+
+    <TextView
+        android:id="@+id/vegTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Vegetarian"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/glutenTv" />
+
+    <CheckBox
+        android:id="@+id/vegCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vegTv"
+        app:layout_constraintEnd_toEndOf="@+id/glutenCb"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/vegTv" />
+
+    <TextView
+        android:id="@+id/veganTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Vegan"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vegTv" />
+
+    <CheckBox
+        android:id="@+id/veganCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/veganTv"
+        app:layout_constraintEnd_toEndOf="@+id/glutenCb"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/veganTv" />
+
+    <TextView
+        android:id="@+id/pesoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Pescetarian"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/veganTv" />
+
+    <CheckBox
+        android:id="@+id/pesoCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pesoTv"
+        app:layout_constraintEnd_toEndOf="@+id/glutenCb"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/pesoTv" />
+
+    <TextView
+        android:id="@+id/wholeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Whole 360"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pesoTv" />
+
+    <CheckBox
+        android:id="@+id/wholeCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/wholeTv"
+        app:layout_constraintEnd_toEndOf="@+id/glutenCb"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/wholeTv" />
+
+    <TextView
+        android:id="@+id/otherTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Other Diet Types"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wholeTv" />
+
+    <CheckBox
+        android:id="@+id/otherCb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/otherTv"
+        app:layout_constraintEnd_toEndOf="@+id/glutenCb"
+        app:layout_constraintStart_toEndOf="@+id/otherTv"
+        app:layout_constraintTop_toTopOf="@+id/otherTv" />
 
     <Button
         android:id="@+id/continueBtn"
