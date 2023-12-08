@@ -57,6 +57,8 @@ dependencies {
 
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.3.1")
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

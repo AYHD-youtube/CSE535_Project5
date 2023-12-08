@@ -1,12 +1,12 @@
 package edu.asu.cse535.project5
 
 import android.R
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
@@ -17,8 +17,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import edu.asu.cse535.project5.databinding.ActivityExerciseBinding
+import edu.asu.cse535.project5.datamodel.NotiBody
 import edu.asu.cse535.project5.datamodel.RecommendedExerciseBody
 import edu.asu.cse535.project5.network.Client
+import edu.asu.cse535.project5.network.ClientNoti
 import edu.asu.cse535.project5.network.Resource
 import edu.asu.cse535.project5.repo.ExerciseRepo
 import java.text.SimpleDateFormat
@@ -31,7 +33,7 @@ class ExerciseActivity : AppCompatActivity() {
         FirebaseDatabase.getInstance().reference
     }
     private val repo by lazy {
-        ExerciseRepo(Client.api)
+        ExerciseRepo(Client.api, ClientNoti.api)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -216,7 +218,6 @@ class ExerciseActivity : AppCompatActivity() {
                     when (it) {
                         is Resource.Error -> {
                             it.message?.let { message ->
-                                binding.loadingPb.visibility = View.GONE
                                 binding.errorTv.visibility = View.VISIBLE
                                 binding.errorTv.text = message
                             }
@@ -227,7 +228,39 @@ class ExerciseActivity : AppCompatActivity() {
                         }
 
                         is Resource.Success -> {
-                            binding.exerciseRecommendationTv.text="Your Exercise for tomorrow is ${it.data?.recommended_exercise} for ${it.data?.time} mins"
+                            val data = NotiBody.Data(
+                                "For duration ${it.data?.time} min and will burn ${it.data?.calories} calories",
+                                "Tomorrow's exercise ${it.data?.recommended_exercise}"
+                            )
+                            val notification = NotiBody.Notification(
+                                "For duration ${it.data?.time} min and will burn ${it.data?.calories} calories",
+                                "Tomorrow's exercise ${it.data?.recommended_exercise}"
+                            )
+                            val sharedPreferences =
+                                getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+                            val token = sharedPreferences.getString("fcmToken", "") ?: ""
+                            Log.d("ExerciseActivity", "onDataChange: $token")
+                            viewModel.postNotification(NotiBody(data, notification, token))
+                            binding.exerciseRecommendationTv.text =
+                                "Your Exercise for tomorrow is ${it.data?.recommended_exercise} for ${it.data?.time} mins"
+                        }
+                    }
+                }
+
+                viewModel.noti.observe(this@ExerciseActivity) {
+                    when (it) {
+                        is Resource.Error -> {
+                            it.message?.let { message ->
+                                binding.loadingPb.visibility = View.GONE
+                                binding.errorTv.visibility = View.VISIBLE
+                                binding.errorTv.text = message
+                            }
+                        }
+
+                        is Resource.Loading -> {
+                        }
+
+                        is Resource.Success -> {
                             binding.loadingPb.visibility = View.GONE
                         }
                     }
