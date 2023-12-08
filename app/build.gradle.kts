@@ -47,6 +47,9 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
+    implementation("com.android.volley:volley:1.2.1")
+    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
+
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")

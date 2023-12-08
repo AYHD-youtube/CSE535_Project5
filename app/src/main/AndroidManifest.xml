@@ -24,6 +24,10 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/common_google_signin_btn_text_light_pressed" />
 
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui"/>
+      
         <activity
             android:name=".ExerciseActivity"
             android:exported="false" />
@@ -40,8 +44,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DietActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true">
+        </activity>
 
         <service
             android:name=".MyFirebaseMessagingService"
